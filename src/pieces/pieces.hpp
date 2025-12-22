@@ -10,11 +10,11 @@ class Pieces{
     
     public:
          Pieces(const std::string c) : color(c){};
-         bool isWhite();
-         int string_to_pos(const std::string& string);
-         bool isPossibleMove(const std::string& string);
+         const std::string getColor() { return color; }
+         bool isPossibleMove(const int& pos1, const int& pos2);
          virtual std::vector<int> possibleMoves(const int& pos) = 0;
          virtual void printEmoji() = 0;
+         virtual std::string getType() = 0;
          virtual ~Pieces() = default;
 
 };
@@ -24,7 +24,7 @@ class Pawn : public Pieces{
         Pawn(const std::string c) : Pieces(c){};
         std::vector<int> possibleMoves(const int& pos) override;
         void printEmoji() override;
-
+        std::string getType() override { return "Pawn"; }
 };
 
 class Rook : public Pieces{
@@ -32,6 +32,7 @@ class Rook : public Pieces{
         Rook(const std::string c) : Pieces(c){};
         std::vector<int> possibleMoves(const int& pos) override;
         void printEmoji() override;
+        std::string getType() override { return "Rook"; }
 };
 
 class Knight : public Pieces{
@@ -39,6 +40,7 @@ class Knight : public Pieces{
         Knight(const std::string c) : Pieces(c){};
         std::vector<int> possibleMoves(const int& pos) override;
         void printEmoji() override;
+        std::string getType() override { return "Knight"; }
 };
 
 class Bishop : public Pieces{
@@ -46,6 +48,7 @@ class Bishop : public Pieces{
         Bishop(const std::string c) : Pieces(c){};
         std::vector<int> possibleMoves(const int& pos) override;
         void printEmoji() override;
+        std::string getType() override { return "Bishop"; }
 };
 
 class Queen : public Pieces{
@@ -53,6 +56,7 @@ class Queen : public Pieces{
         Queen(const std::string c) : Pieces(c){};
         std::vector<int> possibleMoves(const int& pos) override;
         void printEmoji() override; 
+        std::string getType() override { return "Queen"; }
 };
 
 class King : public Pieces{
@@ -60,6 +64,7 @@ class King : public Pieces{
         King(const std::string c) : Pieces(c){};
         std::vector<int> possibleMoves(const int& pos) override;
         void printEmoji() override;
+        std::string getType() override { return "King"; }
 };
 
 

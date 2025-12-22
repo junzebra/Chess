@@ -23,7 +23,7 @@ void Game::string_to_intBoard(){
     }
 }
 
-void Game::intBoard_to_arrBoard(){
+void Game::set_pieces(){
     for (int i = 0; i < 64 ; i++){
         int piece = intBoard[i];
         if (piece == 0){
@@ -58,10 +58,12 @@ bool Game::isWhiteTurn(){
 }
 
 void Game::print_board(){
+    int n = 8;
     for(int i = 0; i<64; i++){
         auto p = board[i];
         if(i>0 && i%8==0){
-            std::cout<<"\n";
+            std::cout<< n << "\n";
+            n--;
         }
         if(p == nullptr){
                 std::cout<<". ";
@@ -71,10 +73,10 @@ void Game::print_board(){
             p -> printEmoji();
         }
     }
-    std::cout<<std::endl;
+    std::cout<< n << "\na b c d e f g h" << std::endl;
 }
 
-std::string Game::get_piece(){
+std::string Game::get_move1(){
     std::string move;
 
     std::cout<< "What piece?";
@@ -83,7 +85,7 @@ std::string Game::get_piece(){
     return move;
 }
 
-std::string Game::get_move(){
+std::string Game::get_move2(){
     std::string move;
 
     std::cout<< "Where to?";
@@ -135,6 +137,7 @@ int Game::string_to_pos(const std::string& string){
     if (string[1] == '8'){return count;}
     else if (string[1] == '7'){
         count += 8;
+        return count;
     }
     else if (string[1] == '6'){
         count += 16;
@@ -167,3 +170,60 @@ int Game::string_to_pos(const std::string& string){
 return 0;
 }
 
+bool Game::isPiece(const int& i){
+    return(board[i] != nullptr);
+}
+
+Pieces* Game::get_piece(const int& i){
+    auto piece = board[i];
+    return piece;
+}
+
+bool Game::isLegalMove(const int& p1, const int&p2){
+
+           //checks if same color piece
+    if(isPiece(p2) && board[p2] -> getColor() == board[p1] -> getColor()){
+        std::cout << "INVALID MOVE: CANNOT CAPTURE OWN PIECE" << std::endl;
+        return false;
+    }
+    //knight can jump over pieces
+    if(board[p1] -> getType() == "Knight"){
+        return true;
+    }
+    //checks if path is blocked
+    int row1 = p1/8;
+    int col1 = p1%8;
+    int row2 = p2/8;
+    int col2 = p2%8;
+    int delta_row = row1 - row2;
+    int delta_col = col1 - col2;
+    int d1 = 0;
+    int d2 = 0;
+    int pos = p1;
+
+    if(delta_row > 0){d1 = -8;}
+    else if(delta_row < 0){d1 = +8;}
+
+    if(delta_col > 0){d2 = -1;}
+    else if(delta_col < 0){d2 = +1;}
+
+    while(pos != p2){
+        if(isPiece(pos)&& pos != p1){
+            std::cout << "INVALID MOVE: PATH BLOCKED" << std::endl;
+            return false;
+        }
+        pos += d1 + d2;
+    }
+
+    return true;
+
+}
+
+void Game::move_pieces(const int& p1, const int& p2){
+
+    if(isPiece(p2) && board[p2] -> getColor() != board[p1] -> getColor()){
+        delete board[p2];
+    }
+    board[p2] = board[p1];
+    board [p1] = nullptr;
+}

@@ -8,22 +8,17 @@
 #include <cmath>
 #include "../game/game.hpp"
 
-bool Pieces::isWhite(){
-    return color == "White";
-}
 
-
-//check if move is part of possibleMoves vector
-bool Pieces::isPossibleMove(const std::string& string){
+bool Pieces::isPossibleMove(const int& pos1, const int& pos2){
  
-    int pos = Game::string_to_pos(string);
 
-    if (pos == 100){
+    if (pos2 == 100){
         return false;
     }
 
-    std::vector<int> moves = possibleMoves(pos);
-    std::vector<int>::iterator it = std::find(moves.begin(),moves.end(),pos);
+    //checks to see if in possibleMoves vector
+    std::vector<int> moves = possibleMoves(pos1);
+    std::vector<int>::iterator it = std::find(moves.begin(),moves.end(),pos2);
 
     if(it != moves.end()){
         return true;
@@ -36,7 +31,7 @@ bool Pieces::isPossibleMove(const std::string& string){
 
 
 void Pawn::printEmoji(){
-    if (isWhite()){
+    if (color == "White"){
         std::cout << "♟ ";
     }
     else{
@@ -45,7 +40,7 @@ void Pawn::printEmoji(){
 }
 
 void Rook::printEmoji(){
-    if (isWhite()){
+    if (color == "White"){
         std::cout << "♜ ";
     }
     else{
@@ -54,7 +49,7 @@ void Rook::printEmoji(){
 }
 
 void Bishop::printEmoji(){
-    if (isWhite()){
+    if (color == "White"){
         std::cout << "♝ ";
     }
     else{
@@ -63,7 +58,7 @@ void Bishop::printEmoji(){
 }
 
 void Knight::printEmoji(){
-    if (isWhite()){
+    if (color == "White"){
         std::cout << "♞ ";
     }
     else{
@@ -72,7 +67,7 @@ void Knight::printEmoji(){
 }
 
 void Queen::printEmoji(){
-    if (isWhite()){
+    if (color == "White"){
         std::cout << "♛ ";
     }
     else{
@@ -81,7 +76,7 @@ void Queen::printEmoji(){
 }
 
 void King::printEmoji(){
-    if (isWhite()){
+    if (color == "White"){
         std::cout << "♚ ";
     }
     else{
@@ -102,7 +97,7 @@ std::vector<int> Pawn::possibleMoves(const int& pos) {
         else{
             if(pos+8 < 64)
             moves.push_back(pos+8);
-            if(pos >= 0 && pos < 8){
+            if(pos >= 8 && pos < 16){
                 moves.push_back(pos+16);
             }
 
@@ -121,7 +116,7 @@ std::vector<int> Rook::possibleMoves(const int& pos) {
             moves.push_back(i);
         }
         //the horizontal
-        if (i>= pos - mod && i <= pos + mod && i != pos){
+        if (i>= pos - mod && i <= pos + (8 - mod) && i != pos){
             moves.push_back(i);
         }
     }
@@ -164,7 +159,7 @@ std::vector<int> Bishop::possibleMoves(const int& pos) {
             moves.push_back(pos+(n*increment));
         }
         if(((pos-(n*increment))%8 == mod-n) && pos-(n*increment) >= 0){
-            moves.push_back(pos+(n*increment));
+            moves.push_back(pos-(n*increment));
         }
     }
 
@@ -181,7 +176,7 @@ std::vector<int> Queen::possibleMoves(const int& pos) {
             moves.push_back(i);
         }
         //the horizontal
-        if (i>= pos - mod && i <= pos + mod && i != pos){
+        if (i>= pos - mod && i <= pos + (8 - mod) && i != pos){
             moves.push_back(i);
         }
     }
@@ -192,7 +187,7 @@ std::vector<int> Queen::possibleMoves(const int& pos) {
             moves.push_back(pos+(n*increment));
         }
         if(((pos-(n*increment))%8 == mod-n) && pos-(n*increment) >= 0){
-            moves.push_back(pos+(n*increment));
+            moves.push_back(pos-(n*increment));
         }
     }
 
