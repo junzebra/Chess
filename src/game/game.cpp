@@ -227,3 +227,76 @@ void Game::move_pieces(const int& p1, const int& p2){
     board[p2] = board[p1];
     board [p1] = nullptr;
 }
+
+int Game::findKing(std::string color){
+     Pieces* king;
+     int i = 0;
+        while(board[i] != nullptr && board[i] ->getColor() == color){
+            king = board[i];
+            i++;
+        }
+    return i;  
+    }
+
+bool Game::isCheck(std::string color){
+
+    Pieces* piece;
+
+    int w = findKing(color);
+    for(int i = 0; i <64; i++){
+        if(board[i]!= nullptr && board[i] ->getColor() != color)
+        piece = board[i];
+        if(piece -> isPossibleMove(w,i) && isLegalMove(w,i)){
+            return true;
+        }
+    }
+    return false;
+
+
+}
+
+bool Game::isCheckmate(std::string color){
+    int king_pos;
+    king_pos = findKing(color);
+
+    Pieces* king;
+    Pieces* piece;
+
+    bool checkmate = true;
+
+    king = board[king_pos];
+
+
+    if(!king -> possibleMoves(king_pos).empty()){
+        for(int i : king -> possibleMoves(king_pos)){
+            if(isLegalMove(king_pos, i)&& king ->isPossibleMove(king_pos,i)){
+                checkmate = false;
+            }
+        }
+    }
+
+    for(int i = 0; i<64; i++){
+        if(board[i] != nullptr && board[i]->getColor()==color){
+            piece = board[i];
+        
+            for(int j : piece ->possibleMoves(i)){
+                if(isLegalMove(i,j)&& piece ->isPossibleMove(i,j)){
+                    auto temp = board[j];
+                    board[j] = board[i];
+                    board[i] == nullptr;
+                    if(!isCheck(color)){
+                        checkmate = false;
+                    }
+                    board[i] = board[j];
+                    board[j] = temp;
+                }
+
+            }
+        }
+    }
+    return checkmate;
+}
+
+bool Game::isDraw(){
+
+}

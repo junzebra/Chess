@@ -85,7 +85,7 @@ void King::printEmoji(){
 }
 
 std::vector<int> Pawn::possibleMoves(const int& pos) { 
-    std::vector<int> moves;
+    std::vector<int> moves = {};
         if(color=="White"){
             if(pos-8 >= 0)
             moves.push_back(pos-8);
@@ -107,7 +107,7 @@ std::vector<int> Pawn::possibleMoves(const int& pos) {
 }
 
 std::vector<int> Rook::possibleMoves(const int& pos) {
-    std::vector<int> moves;
+    std::vector<int> moves = {};
     int mod = pos%8;
     int rest = 7-mod;
     for (int i = 0;i < 64; i++){
@@ -125,7 +125,7 @@ std::vector<int> Rook::possibleMoves(const int& pos) {
 }
 
 std::vector<int> Knight::possibleMoves(const int& pos) {
-    std::vector<int> moves;
+    std::vector<int> moves = {};
     int mod = pos%8;
 
     //only pushes if in expected column
@@ -149,7 +149,7 @@ std::vector<int> Knight::possibleMoves(const int& pos) {
     return moves; 
 }
 std::vector<int> Bishop::possibleMoves(const int& pos) {
-    std::vector<int> moves;
+    std::vector<int> moves = {};
     int mod = pos%8;
     int increment = 9;
 
@@ -166,7 +166,7 @@ std::vector<int> Bishop::possibleMoves(const int& pos) {
     return moves; 
 }
 std::vector<int> Queen::possibleMoves(const int& pos) {
-    std::vector<int> moves;
+    std::vector<int> moves = {};
     int mod = pos&8;
     int increment = 9;
 
@@ -194,7 +194,7 @@ std::vector<int> Queen::possibleMoves(const int& pos) {
     return moves; 
 }
 std::vector<int> King::possibleMoves(const int& pos) {
-    std::vector<int> moves;
+    std::vector<int> moves = {};
     int mod = pos%8;
 
     if(((pos-9)%8 == mod-1) && pos-9 >= 0)

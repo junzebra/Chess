@@ -27,6 +27,10 @@
         Pieces* get_piece(const int& pos);
         bool isLegalMove(const int& p1, const int& p2);
         void move_pieces(const int& i, const int& j);
+        int findKing(std::string color);
+        bool isCheck(std::string color);
+        bool isCheckmate(std::string color);
+        bool isDraw();
 
         
     };

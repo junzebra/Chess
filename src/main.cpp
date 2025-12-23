@@ -39,6 +39,9 @@ int main() {
         if(piece1 -> isPossibleMove(pos1, pos2) && myGame.isLegalMove(pos1, pos2)){
             myGame.move_pieces(pos1, pos2);
             system("clear");
+            if(myGame.isCheck("White")|| myGame.isCheck("Black"))
+            std::cout<<"Check!!";
+            
             myGame.print_board();
             myGame.register_move();
             }
