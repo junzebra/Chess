@@ -17,7 +17,7 @@ int main() {
     myGame.print_board();
 
     //Main loop
-    for(int turn = 0; turn < 10; turn++){
+    for(int turn = 0; turn < 100; turn++){
         std::string piece = myGame.get_move1();
         std::string move = myGame.get_move2();
         int pos1 = myGame.string_to_pos(piece);
@@ -39,8 +39,13 @@ int main() {
         if(piece1 -> isPossibleMove(pos1, pos2) && myGame.isLegalMove(pos1, pos2)){
             myGame.move_pieces(pos1, pos2);
             system("clear");
-            if(myGame.isCheck("White")|| myGame.isCheck("Black"))
-            std::cout<<"Check!!";
+            if(myGame.isCheck("White")|| myGame.isCheck("Black")){
+                if(myGame.isCheckmate("White"))
+                std::cout<<"BLACK WINS!\n";
+                if(myGame.isCheckmate("Black"))
+                std::cout<<"WHITE Wins!\n";
+                std::cout<<"Check!!\n";
+            }
             
             myGame.print_board();
             myGame.register_move();

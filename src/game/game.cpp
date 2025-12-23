@@ -229,14 +229,15 @@ void Game::move_pieces(const int& p1, const int& p2){
 }
 
 int Game::findKing(std::string color){
-     Pieces* king;
-     int i = 0;
-        while(board[i] != nullptr && board[i] ->getColor() == color){
-            king = board[i];
-            i++;
-        }
-    return i;  
+    for (int i = 0; i < 64; i++) {
+        if (board[i] != nullptr &&
+            board[i]->getType() == "King" &&
+            board[i]->getColor() == color) {
+            return i; 
+            }
     }
+    return -1;
+}
 
 bool Game::isCheck(std::string color){
 
@@ -246,9 +247,11 @@ bool Game::isCheck(std::string color){
     for(int i = 0; i <64; i++){
         if(board[i]!= nullptr && board[i] ->getColor() != color)
         piece = board[i];
-        if(piece -> isPossibleMove(w,i) && isLegalMove(w,i)){
+        else{continue;}
+        if(piece -> isPossibleMove(i,w) && isLegalMove(i,w)){
             return true;
         }
+        else{continue;}
     }
     return false;
 
@@ -283,16 +286,18 @@ bool Game::isCheckmate(std::string color){
                 if(isLegalMove(i,j)&& piece ->isPossibleMove(i,j)){
                     auto temp = board[j];
                     board[j] = board[i];
-                    board[i] == nullptr;
+                    board[i] = nullptr;
                     if(!isCheck(color)){
                         checkmate = false;
                     }
                     board[i] = board[j];
                     board[j] = temp;
                 }
+                else{continue;}
 
             }
         }
+        else{continue;}
     }
     return checkmate;
 }

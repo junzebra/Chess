@@ -152,6 +152,7 @@ std::vector<int> Bishop::possibleMoves(const int& pos) {
     std::vector<int> moves = {};
     int mod = pos%8;
     int increment = 9;
+    int increment2 = 7;
 
     //pushes diagonals ignoring initial pos
     for(int n = 1; n <9;n++){
@@ -163,12 +164,22 @@ std::vector<int> Bishop::possibleMoves(const int& pos) {
         }
     }
 
+    for(int n = 1; n <9;n++){
+        if(((pos+(n*increment2))%8 == mod-n) && pos+(n*increment2) < 64){
+            moves.push_back(pos+(n*increment2));
+        }
+        if(((pos-(n*increment2))%8 == mod+n) && pos-(n*increment2) >= 0){
+            moves.push_back(pos-(n*increment2));
+        }
+    }
+
     return moves; 
 }
 std::vector<int> Queen::possibleMoves(const int& pos) {
     std::vector<int> moves = {};
-    int mod = pos&8;
+    int mod = pos%8;
     int increment = 9;
+    int increment2 = 7;
 
      for (int i = 0;i < 64; i++){
         //the vertical
@@ -188,6 +199,15 @@ std::vector<int> Queen::possibleMoves(const int& pos) {
         }
         if(((pos-(n*increment))%8 == mod-n) && pos-(n*increment) >= 0){
             moves.push_back(pos-(n*increment));
+        }
+    }
+
+    for(int n = 1; n <9;n++){
+        if(((pos+(n*increment2))%8 == mod-n) && pos+(n*increment2) < 64){
+            moves.push_back(pos+(n*increment2));
+        }
+        if(((pos-(n*increment2))%8 == mod+n) && pos-(n*increment2) >= 0){
+            moves.push_back(pos-(n*increment2));
         }
     }
 
@@ -211,7 +231,7 @@ std::vector<int> King::possibleMoves(const int& pos) {
     moves.push_back(pos+7);
     if(((pos+8)%8 == mod) && pos+8 < 64)
     moves.push_back(pos+8);
-    if(((pos+9)%9 == mod+1) && pos+9 < 64)
+    if(((pos+9)%8 == mod+1) && pos+9 < 64)
     moves.push_back(pos+9);
 
 
