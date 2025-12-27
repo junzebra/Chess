@@ -142,7 +142,7 @@ std::vector<int> Knight::possibleMoves(const int& pos) {
     moves.push_back(pos-15);
     if(((pos-10)%8 == mod-2 && pos-10 >= 0))
     moves.push_back(pos-10);
-    if(((pos-7)%8 == mod+2 && pos-7 >= 0))
+    if(((pos-6)%8 == mod+2 && pos-7 >= 0))
     moves.push_back(pos-7);
     if(((pos+6)%8 == mod-2 && pos+6 < 64))
     moves.push_back(pos+6);

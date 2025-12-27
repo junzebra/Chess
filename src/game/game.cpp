@@ -179,11 +179,13 @@ Pieces* Game::get_piece(const int& i){
     return piece;
 }
 
-bool Game::isLegalMove(const int& p1, const int&p2){
+bool Game::isLegalMove(const int& p1, const int&p2, bool verbose){
 
            //checks if same color piece
     if(isPiece(p2) && board[p2] -> getColor() == board[p1] -> getColor()){
-        std::cout << "INVALID MOVE: CANNOT CAPTURE OWN PIECE" << std::endl;
+        if(verbose){
+            std::cout << "INVALID MOVE: CANNOT CAPTURE OWN PIECE" << std::endl;
+        }
         return false;
     }
     //pawn specific movement rules
@@ -201,7 +203,9 @@ bool Game::isLegalMove(const int& p1, const int&p2){
             if(row1 == start_row && p2 == p1 + (2 * dir) && !isPiece(p1 + dir) && !isPiece(p2)){
                 return true;
             }
-            std::cout << "INVALID MOVE: PAWN MOVE BLOCKED" << std::endl;
+            if(verbose){
+                std::cout << "INVALID MOVE: PAWN MOVE BLOCKED" << std::endl;
+            }
             return false;
         }
 
@@ -209,10 +213,14 @@ bool Game::isLegalMove(const int& p1, const int&p2){
             if(isPiece(p2) && board[p2]->getColor() != board[p1]->getColor()){
                 return true;
             }
-            std::cout << "INVALID MOVE: PAWN CAPTURE ONLY DIAGONAL" << std::endl;
+            if(verbose){
+                std::cout << "INVALID MOVE: PAWN CAPTURE ONLY DIAGONAL" << std::endl;
+            }
             return false;
         }
-        std::cout << "INVALID MOVE: PAWN MOVE" << std::endl;
+        if(verbose){
+            std::cout << "INVALID MOVE: PAWN MOVE" << std::endl;
+        }
         return false;
     }
     //knight can jump over pieces
@@ -238,7 +246,9 @@ bool Game::isLegalMove(const int& p1, const int&p2){
 
     while(pos != p2){
         if(isPiece(pos)&& pos != p1){
-            std::cout << "INVALID MOVE: PATH BLOCKED" << std::endl;
+            if(verbose){
+                std::cout << "INVALID MOVE: PATH BLOCKED" << std::endl;
+            }
             return false;
         }
         pos += d1 + d2;
@@ -246,6 +256,16 @@ bool Game::isLegalMove(const int& p1, const int&p2){
 
     return true;
 
+}
+
+bool Game::isSafeMove(const int& p1, const int& p2, const std::string& color){
+    auto temp = board[p2];
+    board[p2] = board[p1];
+    board[p1] = nullptr;
+    bool safe = !isCheck(color);
+    board[p1] = board[p2];
+    board[p2] = temp;
+    return safe;
 }
 
 void Game::move_pieces(const int& p1, const int& p2){
@@ -277,7 +297,7 @@ bool Game::isCheck(std::string color){
         if(board[i]!= nullptr && board[i] ->getColor() != color)
         piece = board[i];
         else{continue;}
-        if(piece -> isPossibleMove(i,w) && isLegalMove(i,w)){
+        if(piece -> isPossibleMove(i,w) && isLegalMove(i,w, false)){
             return true;
         }
         else{continue;}
@@ -298,7 +318,7 @@ bool Game::isCheckmate(std::string color){
             piece = board[i];
         
             for(int j : piece ->possibleMoves(i)){
-                if(isLegalMove(i,j)&& piece ->isPossibleMove(i,j)){
+                if(isLegalMove(i,j, false)&& piece ->isPossibleMove(i,j)){
                     auto temp = board[j];
                     board[j] = board[i];
                     board[i] = nullptr;

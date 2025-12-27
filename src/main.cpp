@@ -37,6 +37,10 @@ int main() {
             continue;
         }
         if(piece1 -> isPossibleMove(pos1, pos2) && myGame.isLegalMove(pos1, pos2)){
+            if(!myGame.isSafeMove(pos1, pos2, piece1->getColor())){
+                std::cout << "INVALID MOVE: KING IN CHECK" << std::endl;
+                continue;
+            }
             myGame.move_pieces(pos1, pos2);
             system("clear");
             if(myGame.isCheck("White")){

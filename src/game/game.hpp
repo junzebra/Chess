@@ -25,7 +25,8 @@
         int string_to_pos(const std::string& string);
         bool isPiece(const int& pos);
         Pieces* get_piece(const int& pos);
-        bool isLegalMove(const int& p1, const int& p2);
+        bool isLegalMove(const int& p1, const int& p2, bool verbose = true);
+        bool isSafeMove(const int& p1, const int& p2, const std::string& color);
         void move_pieces(const int& i, const int& j);
         int findKing(std::string color);
         bool isCheck(std::string color);
