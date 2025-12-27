@@ -186,6 +186,35 @@ bool Game::isLegalMove(const int& p1, const int&p2){
         std::cout << "INVALID MOVE: CANNOT CAPTURE OWN PIECE" << std::endl;
         return false;
     }
+    //pawn specific movement rules
+    if(board[p1] -> getType() == "Pawn"){
+        int row1 = p1/8;
+        int col1 = p1%8;
+        int col2 = p2%8;
+        int dir = (board[p1]->getColor() == "White") ? -8 : 8;
+        int start_row = (board[p1]->getColor() == "White") ? 6 : 1;
+
+        if(col2 == col1){
+            if(p2 == p1 + dir && !isPiece(p2)){
+                return true;
+            }
+            if(row1 == start_row && p2 == p1 + (2 * dir) && !isPiece(p1 + dir) && !isPiece(p2)){
+                return true;
+            }
+            std::cout << "INVALID MOVE: PAWN MOVE BLOCKED" << std::endl;
+            return false;
+        }
+
+        if((col2 == col1 - 1 || col2 == col1 + 1) && p2 == p1 + dir + (col2 - col1)){
+            if(isPiece(p2) && board[p2]->getColor() != board[p1]->getColor()){
+                return true;
+            }
+            std::cout << "INVALID MOVE: PAWN CAPTURE ONLY DIAGONAL" << std::endl;
+            return false;
+        }
+        std::cout << "INVALID MOVE: PAWN MOVE" << std::endl;
+        return false;
+    }
     //knight can jump over pieces
     if(board[p1] -> getType() == "Knight"){
         return true;
@@ -259,23 +288,9 @@ bool Game::isCheck(std::string color){
 }
 
 bool Game::isCheckmate(std::string color){
-    int king_pos;
-    king_pos = findKing(color);
-
-    Pieces* king;
     Pieces* piece;
-
-    bool checkmate = true;
-
-    king = board[king_pos];
-
-
-    if(!king -> possibleMoves(king_pos).empty()){
-        for(int i : king -> possibleMoves(king_pos)){
-            if(isLegalMove(king_pos, i)&& king ->isPossibleMove(king_pos,i)){
-                checkmate = false;
-            }
-        }
+    if(!isCheck(color)){
+        return false;
     }
 
     for(int i = 0; i<64; i++){
@@ -288,18 +303,18 @@ bool Game::isCheckmate(std::string color){
                     board[j] = board[i];
                     board[i] = nullptr;
                     if(!isCheck(color)){
-                        checkmate = false;
+                        board[i] = board[j];
+                        board[j] = temp;
+                        return false;
                     }
                     board[i] = board[j];
                     board[j] = temp;
                 }
-                else{continue;}
 
             }
         }
-        else{continue;}
     }
-    return checkmate;
+    return true;
 }
 
 bool Game::isDraw(){

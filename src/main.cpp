@@ -39,11 +39,16 @@ int main() {
         if(piece1 -> isPossibleMove(pos1, pos2) && myGame.isLegalMove(pos1, pos2)){
             myGame.move_pieces(pos1, pos2);
             system("clear");
-            if(myGame.isCheck("White")|| myGame.isCheck("Black")){
+            if(myGame.isCheck("White")){
                 if(myGame.isCheckmate("White"))
                 std::cout<<"BLACK WINS!\n";
+                else
+                std::cout<<"Check!!\n";
+            }
+            if(myGame.isCheck("Black")){
                 if(myGame.isCheckmate("Black"))
                 std::cout<<"WHITE Wins!\n";
+                else
                 std::cout<<"Check!!\n";
             }
             

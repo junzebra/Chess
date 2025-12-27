@@ -86,13 +86,17 @@ void King::printEmoji(){
 
 std::vector<int> Pawn::possibleMoves(const int& pos) { 
     std::vector<int> moves = {};
+        int col = pos%8;
         if(color=="White"){
             if(pos-8 >= 0)
             moves.push_back(pos-8);
-            if(pos >= 48 && pos < 56 && pos-8){
+            if(pos >= 48 && pos < 56){
                 moves.push_back(pos-16);
             }
-
+            if(col > 0 && pos-9 >= 0)
+            moves.push_back(pos-9);
+            if(col < 7 && pos-7 >= 0)
+            moves.push_back(pos-7);
         }
         else{
             if(pos+8 < 64)
@@ -100,7 +104,10 @@ std::vector<int> Pawn::possibleMoves(const int& pos) {
             if(pos >= 8 && pos < 16){
                 moves.push_back(pos+16);
             }
-
+            if(col > 0 && pos+7 < 64)
+            moves.push_back(pos+7);
+            if(col < 7 && pos+9 < 64)
+            moves.push_back(pos+9);
         }
 
     return moves; 
